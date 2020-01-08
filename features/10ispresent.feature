@@ -1,9 +1,9 @@
-Feature: Script must be named "filter.pl", present and be marked as executable
-	Scenario: filter.pl must be found
+Feature: Script must be present and be executable
+	Scenario: srpt must be found
 		When I run `getfile` 
-		Then a file named "../../bin/filter.pl" should exist
-		Then 5 points are awarded
+		Then a file named "../../bin/srpt" should exist
+		Then 10 points are awarded
 
-	Scenario: filter.pl must be executable
-		When I run `filter.pl`
-		Then 5 points are awarded
+	Scenario: srpt must be executable
+		When I run `srpt` 
+		Then 10 points are awarded
