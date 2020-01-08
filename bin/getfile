@@ -7,4 +7,4 @@ echo $(pwd)
 echo "Getfile called!"
 rm -f ../bin/*
 mkdir -p ../bin
-cp --preserve=mode ../../srpt ../../bin/
+cp --preserve=mode ../../srpt.ps1 ../../bin/
