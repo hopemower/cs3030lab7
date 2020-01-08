@@ -3,6 +3,11 @@ Given /^a folder of assorted files in (.*)/ do |folder|
 	#puts "Top folder: #{@testFiles.topFolder}"
 end
 
+Given /^a huge folder of assorted files in (.*)/ do |folder|
+	@testFiles = TestFiles.new(folder, huge=true)
+	#puts "Top folder: #{@testFiles.topFolder}"
+end
+
 Given /^header contains SearchReport HOSTNAME PATH$/ do
 	hostname = `hostname`.chomp
 	#step "the output should match /SearchReport\s+#{hostname}\s+#{@testFiles.topFolder}/"

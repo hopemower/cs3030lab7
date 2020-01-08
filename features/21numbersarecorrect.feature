@@ -76,15 +76,17 @@ Feature: Program output should be correct
 		And total file size is correct
 		Then 10 points are awarded
 
-	Scenario: execution time is < 5 seconds
+	Scenario: execution time is < 30 seconds
 		Given the default aruba exit timeout is 0 seconds
-		Given a folder of assorted files in testfiles1
-		When I successfully run `srpt testfiles1` for up to 5 seconds
-		Given a folder of assorted files in testfiles2
-		When I successfully run `srpt testfiles2` for up to 5 seconds
-		Given a folder of assorted files in testfiles3
-		When I successfully run `srpt testfiles3` for up to 5 seconds
-		Then 40 points are awarded 
+		Given a folder of assorted files in testfiles
+		When I successfully run `srpt testfiles` for up to 30 seconds
+		Then 20 points are awarded 
+
+	Scenario: large numbers are punctuated with commas
+		Given the default aruba exit timeout is 30 seconds
+		Given a huge folder of assorted files in testfiles
+		When I run `srpt testfiles`
+		Then 20 points are awarded 
 
 	Scenario: exit code is zero for normal execution
 		Given the default aruba exit timeout is 30 seconds

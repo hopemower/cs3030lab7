@@ -1,12 +1,12 @@
 # testfiles.rb - creates a random number of:
-#   files - from 50 up to 500, all with zero length
-#	largefiles - from 1 to 20 files, all greater than 512k
-#	folders - from 30 to 60 nested, all named folderNN
-#	graphics files - from 1 to 20 files renamed with .gif, .jpg, .bmp, all of zero length
+#   files - all with zero length
+#	largefiles - all greater than 500,000 bytes
+#	folders - all named folderNN
+#	graphics files - renamed with .gif, .jpg, .bmp, all of zero length
 #	temp files - some files renamed .o, all of zero length
 #	executable files - some files chmod with --x--x--x, all of zero length
-#	symlinks - from 5 to 30 files, in the same folder as the files, named #{file}sym
-#	oldfiles - touching from 10 up to 30 files with dates > 2 years old
+#	symlinks - in the same folder as the files, named #{file}sym
+#	oldfiles - with dates > 2 years old
 #
 require 'date'
 require 'time'
@@ -23,7 +23,7 @@ SYMLINKS = 0..10
 OLDFILES = 0..10
 
 class TestFiles
-	def initialize(folder)
+	def initialize(folder, huge=false)
 		@topFolder = folder
 		@topFolderPath = File.join('tmp/aruba', folder)
 		if Dir.exists?(@topFolderPath)
@@ -31,8 +31,8 @@ class TestFiles
 		end
 		#puts "ENV: #{ENV['home']}"
 		Dir.mkdir(@topFolderPath, 0700)
-		@folders = makeFolders(@topFolderPath)
-		@files, @fileSizes = makeFiles(@folders)
+		@folders = makeFolders(@topFolderPath, huge)
+		@files, @fileSizes = makeFiles(@folders, huge)
 		@largeFiles = makeLargeFiles(@files, @fileSizes)
 		@graphicsFiles = makeGraphicsFiles(@files)
 		@tempFiles = makeTempFiles(@files)
@@ -40,14 +40,20 @@ class TestFiles
 		@symlinks = makeSymlinks(@files)
 		@oldFiles = makeOldFiles(@files)
 	end
+
 	def topFolder
 		return @topFolder
 	end
 	
 	# folders nested a few levels deep
-	def makeFolders(topFolder)
+	def makeFolders(topFolder, huge=false)
 		r = Random.new
-		totalFolders = r.rand(FOLDERS)
+		if (huge) 
+			totalFolders = r.rand(10000..10500)
+			puts "Creating (huge) #{totalFolders} folders"
+		else
+			totalFolders = r.rand(FOLDERS)
+		end
 		#puts "Creating #{totalFolders} folders"
 		folders = Array.new
 		#folders[0] = "InvalidFolderName" # skip the zero entry
@@ -71,9 +77,14 @@ class TestFiles
 	end
 	
 	# make a bunch of files, some with non-zero length
-	def makeFiles(folders)
+	def makeFiles(folders, huge=false)
 		r = Random.new
-		totalFiles = r.rand(FILES)
+		if (huge) 
+			totalFiles = r.rand(10000..10500)
+			puts "Creating (huge) #{totalFiles} files"
+		else
+			totalFiles = r.rand(FILES)
+		end
 		files = Array.new
 		fileSizes = Array.new
 		for i in 0..totalFiles-1
@@ -266,14 +277,3 @@ end
 #puts "Large files:\n", testFiles.largeFiles
 
 
-#puts "Directories: #{testFiles.folders.count}", 
-#	" Files: #{testFiles.files.count}",
-#	" Sym links: #{testFiles.symlinks.count}",
-#	" Old Files: #{testFiles.oldFiles.count}",
-#	" Large files: #{testFiles.largeFiles.count}",
-#	" Graphics: #{testFiles.graphicsFiles.count}",
-#	" Temporary files: #{testFiles.tempFiles.count}",
-#	" Executable files: #{testFiles.executableFiles.count}",
-#	" Total File Size: #{sprintf("%'2d", testFiles.totalFileSize)}",
-#	" TotalFileSize: #{totalFileSize}"
-		
