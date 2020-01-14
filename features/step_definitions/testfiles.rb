@@ -4,7 +4,7 @@
 #	folders - all named folderNN
 #	graphics files - renamed with .gif, .jpg, .bmp, all of zero length
 #	temp files - some files renamed .o, all of zero length
-#	executable files - some files chmod with --x--x--x, all of zero length
+#	executable files - some files with .exe, .ps1 or .bat, all of zero length
 #	symlinks - in the same folder as the files, named #{file}sym
 #	oldfiles - with dates > 2 years old
 #
@@ -154,6 +154,9 @@ class TestFiles
 			if oldname.include?(".jpg") or
 				oldname.include?(".bmp") or
 				oldname.include?(".gif") or
+				oldname.include?(".exe") or
+				oldname.include?(".ps1") or
+				oldname.include?(".bat") or
 				oldname.include?(".o")
 				#puts "Graphics redo: #{oldname}"
 				redo
@@ -182,6 +185,9 @@ class TestFiles
 			if oldname.include?(".jpg") or
 				oldname.include?(".bmp") or
 				oldname.include?(".gif") or
+				oldname.include?(".exe") or
+				oldname.include?(".ps1") or
+				oldname.include?(".bat") or
 				oldname.include?(".o")
 				#puts "Temp redo: #{oldname}"
 				redo
@@ -205,13 +211,23 @@ class TestFiles
 		executableFiles = Array.new
 		for i in 1..totalExecutableFiles
 			fileNumber = r.rand(0..files.size-1)
-			name = files[fileNumber]
-			if executableFiles.include?(name)
+			oldname = files[fileNumber]
+			if oldname.include?(".jpg") or
+				oldname.include?(".bmp") or
+				oldname.include?(".gif") or
+				oldname.include?(".exe") or
+				oldname.include?(".ps1") or
+				oldname.include?(".bat") or
+				oldname.include?(".o")
 				redo
 			end
-			File.chmod(0755, name)
+			suffix = [".exe", ".ps1", ".bat"][r.rand(0..2)]
+			newname = "#{oldname}#{suffix}"
+			#puts "Old:#{oldname} New:#{newname}"
+			File.rename(oldname, newname)
+			files[fileNumber] = newname 
 			#puts "Executable: :#{name}"
-			executableFiles << name
+			executableFiles << newname
 		end
 		return executableFiles
 	end
