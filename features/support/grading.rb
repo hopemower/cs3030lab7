@@ -30,11 +30,4 @@ end
 
 at_exit do
 	puts "A total of #{$total_points} points have been awarded."
-	running = `ps` 
-	if running =~ /wsh/
-		puts "*** one or more wsh processes are still running"
-		puts running
-		puts "*** Issuing \"killall wsh\""
-		`killall wsh`
-	end
 end
