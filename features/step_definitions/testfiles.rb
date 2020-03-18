@@ -13,6 +13,11 @@ require 'time'
 
 TOPLEVELFOLDERS = 1..10
 FOLDERS = 5..20
+# 18 Mar 2020 Ted Cowan
+# FILES minimum must be greater than maximum values for LARGE, GRAPHICS
+#   TEMP, EXECUTABLE, SYMLINKS and OLD FILES or the for loop redo
+#   will sometimes loop forever
+#   old value was 20..100, now 100..200
 FILES = 100..200
 FILESIZES = 1..20
 LARGEFILES = 0..5
