@@ -90,7 +90,8 @@ Feature: Program output should be correct
 
 	Scenario: exit code is zero for normal execution
 		Given the default aruba exit timeout is 30 seconds
-		When I run `srpt.ps1 /tmp`
+		Given a folder of assorted files in testfiles
+		When I run `srpt.ps1 testfiles`
 		Then the exit status should be 0
 		Then 10 points are awarded
 		
