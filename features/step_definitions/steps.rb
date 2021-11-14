@@ -33,7 +33,7 @@ Given /^header contains SearchReport HOSTNAME PATH$/ do
 	#if !all_output.match(/SearchReport\s+#{hostname}\s+#{@testFiles.topFolder}/)
 	temp_output = all_commands.map { |c| c.output }.join("\n")
 	if !temp_output.match(/SearchReport\s+#{hostname}\s+#{@testFiles.topFolder}/)
-		raise("#{temp_output} does not contain SearchReport #{@testFiles.topFolder} #{hostname}")	
+		raise("#{temp_output} does not contain SearchReport #{hostname} #{@testFiles.topFolder}")	
 	end
 end
 
